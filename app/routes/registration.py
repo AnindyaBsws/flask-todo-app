@@ -29,7 +29,7 @@ def sign_up():
         db.session.commit()
 
         session["user"] = username
-        flash(f"Welcome {session["user"]}!, Let's Begin your journey by adding your first task")
+        flash(f"Welcome {session['user']}!, Let's Begin your journey by adding your first task")
         return redirect(url_for("task.add_task"))
     
     return render_template("registration.html")
