@@ -5,7 +5,7 @@ import os
 
 app = create_app()
 
-if os.environ.get("FLASK_ENV") != "production":
+if os.environ.get("FLASK_ENV") == "development":
     with app.app_context():
         db.create_all()
 

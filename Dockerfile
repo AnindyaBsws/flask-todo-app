@@ -13,10 +13,10 @@ COPY . /app/
 
 # Install dependencies
 RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
+RUN pip install --no-warn-script-location --root-user-action=ignore -r requirements.txt
 
 # Expose the correct port
 EXPOSE 10000
 
-# Run the app with Gunicorn (replace `run` with your filename without `.py`)
+# Run the app with Gunicorn (replace `run` if your app is in a different file)
 CMD ["gunicorn", "--bind", "0.0.0.0:10000", "run:app"]

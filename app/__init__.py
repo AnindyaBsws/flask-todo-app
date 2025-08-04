@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+import os
 
 
 
@@ -11,8 +12,9 @@ def create_app():
     app = Flask(__name__)
 
     
-    app.config["SECRET_KEY"] = "my_secret_key"
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///todo.db"
+    app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "fallback_secret")
+    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL", "sqlite:///todo.db")
+
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
     # SQLAlchemy Database connection with the flask object 'app'
