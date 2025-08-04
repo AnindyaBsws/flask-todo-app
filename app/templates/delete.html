@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %} TaskList {% endblock %}
+
+{% block content %}
+
+<form method="POST" action="{{ url_for('task.delete_selected') }}" id="deleteForm">
+    <div class="overflow-x-auto">
+        <table class="min-w-full table-auto border-collapse rounded-lg overflow-hidden shadow-md">
+            <thead class="bg-purple-100 text-purple-800">
+                <tr>
+                    <th class="px-4 py-2 hidden delete-checkbox-column">Select</th>  <!-- Hidden by default -->
+                    <th class="px-4 py-2">Task ID</th>
+                    <th class="px-4 py-2">Title</th>
+                    <th class="px-4 py-2">Status</th>
+                    <th class="px-4 py-2">Deadline</th>
+                </tr>
+            </thead>
+
+            <tbody class="text-center">
+            {% for task in tasks %}
+                <tr class="border-t hover:bg-purple-50 transition">
+                    <td class="px-4 py-2 hidden delete-checkbox-column">
+                        <input type="checkbox" name="task_ids" value="{{ task.id }}" class="form-checkbox">
+                    </td>
+                    <td class="px-4 py-2">{{ loop.index }}</td>
+                    <td class="px-4 py-2">{{ task.db_task_title }}</td>
+                    <td class="px-4 py-2">
+                        <form action="{{ url_for('task.toggle_status', task_id=task.id)}}" method="POST" style="display:inline">
+                            <button type="submit" style="border: none; background: none; padding: 0;">
+                                <span class="px-3 py-1 rounded-full text-white font-medium cursor-pointer
+                                    {% if task.status == 'Pending' %}
+                                        bg-yellow-500 hover:bg-yellow-600
+                                    {% elif task.status == 'Working' %}
+                                        bg-blue-500 hover:bg-blue-600
+                                    {% elif task.status == 'Completed' %}
+                                        bg-green-500 hover:bg-green-600
+                                    {% endif %}
+                                ">
+                                    {{ task.status }}
+                                </span>
+                            </button>
+                        </form>
+                    </td>
+                    <td class="px-4 py-2">
+                        {{ task.deadline.strftime('%d-%b-%Y %H:%M') if task.deadline else '-' }}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Delete Selected Button (Hidden by default) -->
+    <div class="mt-4 text-center hidden" id="deleteSelectedWrapper">
+        <button type="submit" class="bg-red-600 hover:bg-red-800 text-white font-bold px-4 py-2 rounded-lg">Delete Selected</button>
+    </div>
+</form>
+
+<!-- Delete Individual Button -->
+<div class="mt-4 text-center">
+    <button type="button" onclick="toggleDeleteMode()" class="bg-pink-600 hover:bg-pink-800 text-white font-bold px-4 py-2 rounded-lg">
+        Delete Individual
+    </button>
+</div>
+
+<!-- JavaScript -->
+<script>
+    function toggleDeleteMode() {
+        const checkboxes = document.querySelectorAll(".delete-checkbox-column");
+        const deleteSelectedBtn = document.getElementById("deleteSelectedWrapper");
+
+        checkboxes.forEach(col => {
+            col.classList.toggle("hidden");
+        });
+
+        deleteSelectedBtn.classList.toggle("hidden");
+    }
+</script>
+
+
+{% endblock %}

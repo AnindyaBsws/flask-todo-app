@@ -1,0 +1,25 @@
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1em;
+}
+
+th, td {
+    border: 1px solid #aaa;
+    padding: 0.5em;
+    text-align: center;
+}
+
+.badge.pending {
+    background-color: orange;
+    padding: 3px 7px;
+    border-radius: 5px;
+    color: white;
+}
+
+.badge.completed {
+    background-color: green;
+    padding: 3px 7px;
+    border-radius: 5px;
+    color: white;
+}

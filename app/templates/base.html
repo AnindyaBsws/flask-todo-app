@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>{% block title %} To-Do Web Flask App {% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="bg-gradient-to-br from-indigo-100 to-purple-100 min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-white shadow-md py-4">
+        <div class="container mx-auto flex justify-between items-center px-4">
+            <h1 class="text-2xl font-bold text-purple-700">My TO-DO App</h1>
+            <nav>
+                <div class="flex items-center space-x-4">
+                    <a href="{{ url_for('task.view_task') }}" class="hover:text-yellow-400">View Tasks</a>
+                    <a href="{{ url_for('auth.logout') }}" class="hover:text-yellow-400">Logout</a>
+                </div>
+
+                <!-- Clock showing IST -->
+                <div class="text-sm md:text-base font-mono tracking-widest text-black-300" id="digitalClock">
+                    --:--:--
+                </div>
+
+                {% if 'user' in session %}
+                    <a class="logs text-purple-600 hover:underline" href="{{ url_for('auth.logout') }}">Logout</a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main content -->
+    <main class="container mx-auto px-4 py-6 flex-grow">
+        {% with messages = get_flashed_messages(with_categories=True) %}
+            {% for category, message in messages %}
+                <div class="mb-4 p-4 rounded-lg text-white 
+                            {% if category == 'success' %} bg-green-500 
+                            {% elif category == 'error' %} bg-red-500 
+                            {% else %} bg-blue-500 {% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endwith %}
+
+        {% block content %} {% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white shadow-inner py-4">
+        <div class="container mx-auto text-center text-gray-500 text-sm">
+            <p>&copy; {{2025}} My Flask To-Do App</p>
+        </div>
+    </footer>
+
+    <script>
+        function updateClockIST() {
+            const now = new Date();
+
+            // Convert local time to UTC (ms), then add IST offset (19800 seconds = 5.5 hours)
+            const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+            const istTime = new Date(utc + (19800 * 1000)); // 19800 seconds = 5.5 hrs
+
+            const hours = istTime.getHours().toString().padStart(2, '0');
+            const minutes = istTime.getMinutes().toString().padStart(2, '0');
+            const seconds = istTime.getSeconds().toString().padStart(2, '0');
+
+            const timeString = `${hours}:${minutes}:${seconds}`;
+            document.getElementById('digitalClock').textContent = timeString;
+        }
+
+        updateClockIST();
+        setInterval(updateClockIST, 1000);
+    </script>
+
+
+</body>
+</html>
