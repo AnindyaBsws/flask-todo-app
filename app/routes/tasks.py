@@ -115,25 +115,6 @@ def toggle_status(task_id):
         elif task.status == 'Pending':
                 flash("No Deadlines are added ")
                 task.deadline_status = 'No Deadlines Added'
-
-
-    # if task.deadline:
-    #     time_diff = task.deadline - completed_by
-    #     seconds = int(time_diff.total_seconds())
-    #     abs_seconds = abs(seconds)
-    #     # Logic of Toggling the deadline_status
-    #     if task.status == 'Completed':
-    #         if seconds > 0:
-    #             task.deadline_status = 'Completed Late'
-    #         elif seconds < 0: 
-    #             task.deadline_status = 'Completed by Time'
-    #         else: 
-    #             task.deadline_status = 'Completed on Time'
-    #     else:
-    #         task.deadline_status = 'Yet to Finish'
-
-
-    # print(f"New status will be: {task.status}")
     
     try:
         db.session.commit()

@@ -24,14 +24,6 @@ def login():
             return redirect(url_for('task.add_task'))
         else:
             flash("Invalid credentials", "error")
-        
-
-        # if username == USER_CREDENTIALS["username"] and password == USER_CREDENTIALS["password"]:
-        #     session["user"] = username
-        #     flash(f"Welcome {session["user"]}, login successfull", "success")
-        #     return redirect(url_for("task.view_task"))
-        # else:
-        #     flash("Invalid Credentials", "error")
 
     return render_template("login.html")
 
@@ -48,8 +40,6 @@ def home():
 
 @auth_bp.route('/logout')
 def logout():
-    # if 'user' not in session:
-    #     return render_template("login.html")
     
     session.pop("user", None)
     flash("Successfully Logged Out", "logout")
