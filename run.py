@@ -2,6 +2,8 @@ from app import create_app,db
 import secrets
 from flask import Flask, session, request, redirect, url_for, flash
 import os
+from dotenv import load_dotenv
+load_dotenv()
 
 app = create_app()
 
