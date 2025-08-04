@@ -1,14 +1,16 @@
 from app import create_app,db
 import secrets
 from flask import Flask, session, request, redirect, url_for, flash
+import os
 
 app = create_app()
 
-with app.app_context():
-    db.create_all()
+if os.environ.get("FLASK_ENV") != "production":
+    with app.app_context():
+        db.create_all()
 
 
-app.secret_key = 'your-very-secure-secret-key'
+app.secret_key = os.environ.get("SECRET_KEY", secrets.token_hex(32))
 
 @app.before_request
 def set_csrf_token():
@@ -16,4 +18,4 @@ def set_csrf_token():
         session['csrf_token'] = secrets.token_hex(16)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))

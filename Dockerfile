@@ -15,8 +15,8 @@ COPY . /app/
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
-# Expose port
+# Expose the correct port
 EXPOSE 10000
 
-# Run the app
-CMD ["python", "run.py"]
+# Run the app with Gunicorn (replace `run` with your filename without `.py`)
+CMD ["gunicorn", "--bind", "0.0.0.0:10000", "run:app"]
