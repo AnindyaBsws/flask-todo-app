@@ -31,7 +31,7 @@ def login():
 @auth_bp.route("/home")
 def home():
     if "user"  in session:
-        flash(f"Welcome {session["user"]}, login successfull", "success")
+        flash(f"Welcome {session['user']}, login successfull", "success")
     else:
         flash("Unexpected Error", "danger")
 
